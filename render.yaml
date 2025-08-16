@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: batchboss-api
+    env: node
+    plan: free
+    rootDirectory: server
+    buildCommand: "npm ci"
+    startCommand: "node src/server.js"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_PATH
+        value: /opt/render/project/src/data/batchboss.db
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        sync: false
+    disk:
+      name: batchboss-db
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1
+
+  - type: web
+    name: batchboss-web
+    env: static
+    plan: free
+    rootDirectory: web
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false
