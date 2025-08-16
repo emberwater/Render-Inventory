@@ -1,7 +1,4 @@
-# Create a corrected Render blueprint zip with the proper YAML keys (rootDir, publishPath).
-import zipfile, os
-
-render_yaml_corrected = """services:
+services:
   - type: web
     name: batchboss-api
     env: node
@@ -33,28 +30,3 @@ render_yaml_corrected = """services:
     envVars:
       - key: VITE_API_URL
         sync: false
-"""
-
-readme = """# BatchBoss Render Blueprint (Corrected)
-Use this blueprint file with Render's "Blueprint" deploy.
-
-Changes vs previous:
-- `rootDirectory` -> `rootDir`
-- `staticPublishPath` -> `publishPath`
-
-Steps:
-1) Add `render.yaml` to the repo root.
-2) Commit & push.
-3) In Render: New → Blueprint → select your repo.
-4) After deploy, set env vars:
-   - API: CORS_ORIGIN = https://<your-web-url>
-   - Web: VITE_API_URL = https://<your-api-url>
-5) Redeploy both services.
-"""
-
-zip_path = "/mnt/data/BatchBoss_Render_Blueprint_FIXED.zip"
-with zipfile.ZipFile(zip_path, "w") as z:
-    z.writestr("render.yaml", render_yaml_corrected)
-    z.writestr("README_Render_Blueprint.md", readme)
-
-zip_path
